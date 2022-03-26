@@ -6,6 +6,20 @@ import matplotlib.pyplot as plt
 
 @numba.jit  
 def run_ecolab(env, agents, Niteration=360, earlystop=True):
+    
+    
+    preg_prob = {11: 11/365,
+                 0: 35/365,
+                 1: 59/365,
+                 2: 82/365,
+                 3: 59/365,
+                 4: 35/365,
+                 5: 11/365,
+                 6: 5/365,
+                 7: 5/365,
+                 8: 5/365,
+                 9: 5/365,
+                 10: 5/365}
 
     record=[] #TODO
     sus = []
@@ -22,7 +36,7 @@ def run_ecolab(env, agents, Niteration=360, earlystop=True):
         for agent in agents:
             agent.other_daily_grow()
             if month > 3 and agent.type == AgentType.Adults and agent.gender == Gender.Female and agent.pregnancy_days == -1:
-                agent.reproduct(agents)
+                agent.reproduct(agents, int(month), preg_prob)
             agent.move(env)
             agent.die()
             

@@ -8,11 +8,13 @@ import numba
 import random
 
 
+
 INFANT_NATURE_MOTALITY_RATE = 0.0002
 ADULT_NATURE_MOTALITY_RATE = 0.0013
 #RHD_INFECTION_PROB = 1.27 * 10e-4
 #PREGNANT_PROB = 0.4
 MAX_CAPCITY = 40 # max capcity for each grid
+
 class RHD_Status(Enum):
     """
     RHD_Status
@@ -117,9 +119,11 @@ class Rabbit:
             #np.abs(a.position[0] - self.position[0]) < 2 and np.abs(a.position[1] - self.position[1]) < 2)
 
     # @numba.jit 
-    def reproduct(self, agents):
+    def reproduct(self, agents, month, preg_prob):
+        
         same_grid_male = [a for a in agents if (a.death == False and a.type == AgentType.Adults and a.gender == Gender.Male and (a.position == self.position).all())]
-        prob = np.random.randint(11,83) / 100
+        #prob = np.random.uniform(0.06, 0.44)
+        prob = preg_prob.get(month)
         if len(same_grid_male) > 0 and np.random.rand() <= prob:
             self.pregnancy_days = 0
             # print("one female adult rabbit get pregant")
